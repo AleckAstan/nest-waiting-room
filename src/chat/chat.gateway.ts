@@ -50,7 +50,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('identity')
   async getIdentity(client, identity: Iidentity) {
-    this.users.push(identity.name);
+    if (!this.users.includes(identity.name)) {
+      this.users.push(identity.name);
+    }
     this.server.emit('users', this.users);
     this.correspondanceTable[identity.id] = identity.name;
     console.log('updated users', this.correspondanceTable);
